@@ -2,6 +2,7 @@
 Temperature monitoring using Dallas DS18B20 sensors
 """
 import time
+import threading
 
 class sensor():
 	def __init__(self, idNumber):
@@ -16,5 +17,27 @@ class sensor():
 		except IOError:
 			return -1
 		return temperature
+
+
+class readThread(threading.Thread):
+	def __init__(self, sensors, limit):
+		threading.Thread.__init__(self)
+		self.sensors = sensors
+	def run(self):
+		while(True):
+			for ds in sensors:
+				temp = ds.getTemp()
+				print temp + ' degrees Fahrenheit'
+				if temp > limit:
+					alert(temp)
+					break
+			time.sleep(1800)
+
+
+def getSensors(config):
+	sensors = []
+	for item in open(config):
+		sensors.append(item.rstrip())
+	return sensors
 
 
