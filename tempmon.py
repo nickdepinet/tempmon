@@ -58,6 +58,5 @@ def alert(temp, limit):
 
 
 if __name__ == "__main__":
-	alert(2, 1)
-	# read = readThread(getSensors('config/sensors.config'), 85)
-	# read.run()
+	read = readThread(getSensors('config/sensors.config'), 85)
+	read.run()
